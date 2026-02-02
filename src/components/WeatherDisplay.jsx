@@ -1,99 +1,62 @@
 import React from 'react';
-import { FaThermometerHalf, FaTint, FaWind, FaArrowUp, FaArrowDown, FaCloud, FaEye } from 'react-icons/fa';
+import { FaThermometerHalf, FaTint, FaWind, FaArrowUp, FaArrowDown, FaCloud, FaEye, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
 
-const WeatherDisplay = ({ city, unit }) => {
-    // Données météo simulées
-    const weatherData = {
-        'kinshasa': {
-            temp: 22,
-            feels_like: 24,
-            condition: '☀️ Ensoleillé',
-            humidity: 65,
-            wind: 12,
-            high: 25,
-            low: 18,
-            pressure: 1013,
-            visibility: 10
-        },
-        'lubumbashu': {
-            temp: 20,
-            feels_like: 22,
-            condition: '⛅ Partiellement nuageux',
-            humidity: 70,
-            wind: 10,
-            high: 23,
-            low: 17,
-            pressure: 1015,
-            visibility: 8
-        },
-        'Goma': {
-            temp: 26,
-            feels_like: 28,
-            condition: '☀️ Très ensoleillé',
-            humidity: 55,
-            wind: 15,
-            high: 29,
-            low: 22,
-            pressure: 1010,
-            visibility: 12
-        },
-        'Bukavu': {
-            temp: 16,
-            feels_like: 18,
-            condition: '🌧️ Pluie légère',
-            humidity: 85,
-            wind: 18,
-            high: 18,
-            low: 14,
-            pressure: 1005,
-            visibility: 5
-        }
-    };
-
-    // Conversion température
+const WeatherDisplay = ({ weather, unit, loading }) => {
+    // Fonction de conversion température
     const convertTemp = (temp) => {
         return unit === '°F' ? Math.round((temp * 9 / 5) + 32) : temp;
     };
 
-    const data = weatherData[city] || weatherData['kinshasa'];
+    // Formatage de la date
+    const formatDate = () => {
+        const now = new Date();
+        return now.toLocaleDateString('fr-FR', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+    };
+
+    if (!weather) return null;
 
     return (
-        <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 mb-6 shadow-2xl border border-white/20">
+        <div className={`bg-white/10 backdrop-blur-lg rounded-3xl p-6 mb-6 shadow-2xl border border-white/20 transition-opacity ${loading ? 'opacity-70' : 'opacity-100'}`}>
 
-            {/* En-tête */}
+            {/* En-tête avec ville et date */}
             <div className="text-center mb-8">
-                <h2 className="text-4xl font-bold text-white mb-2">{city}</h2>
-                <p className="text-white/80 text-lg">
-                    {new Date().toLocaleDateString('fr-FR', {
-                        weekday: 'long',
-                        day: 'numeric',
-                        month: 'long'
-                    })}
-                </p>
+                <div className="flex items-center justify-center gap-3 mb-3">
+                    <FaMapMarkerAlt className="text-white/70 text-xl" />
+                    <h2 className="text-4xl font-bold text-white">{weather.city}</h2>
+                    <span className="bg-blue-500/30 text-blue-200 px-3 py-1 rounded-full text-sm">
+                        {weather.country}
+                    </span>
+                </div>
+
+                <div className="flex items-center justify-center gap-2 text-white/80 text-lg">
+                    <FaClock />
+                    <span>{formatDate()}</span>
+                </div>
             </div>
 
-            {/* Température principale */}
+            {/* Conditions principales */}
             <div className="text-center mb-10">
                 <div className="text-9xl font-bold text-white mb-4">
-                    {convertTemp(data.temp)}°
+                    {convertTemp(weather.temp)}°
                 </div>
-                <div className="text-3xl text-white mb-6 flex items-center justify-center gap-3">
-                    <span className="text-5xl">{data.condition.split(' ')[0]}</span>
-                    <span>{data.condition.split(' ').slice(1).join(' ')}</span>
+
+                <div className="flex flex-col items-center gap-4 mb-6">
+                    <div className="text-5xl">
+                        {weather.condition}
+                    </div>
+                    <p className="text-xl text-white/80">
+                        Ressenti: {convertTemp(weather.feels_like)}°
+                    </p>
                 </div>
             </div>
 
             {/* Détails météo */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-
-                {/* Ressenti */}
-                <div className="bg-white/10 rounded-2xl p-4 text-center">
-                    <div className="flex justify-center mb-2">
-                        <FaThermometerHalf className="text-2xl text-red-300" />
-                    </div>
-                    <p className="text-sm text-white/70">Ressenti</p>
-                    <p className="text-2xl font-bold text-white">{convertTemp(data.feels_like)}°</p>
-                </div>
 
                 {/* Humidité */}
                 <div className="bg-white/10 rounded-2xl p-4 text-center">
@@ -101,7 +64,7 @@ const WeatherDisplay = ({ city, unit }) => {
                         <FaTint className="text-2xl text-blue-300" />
                     </div>
                     <p className="text-sm text-white/70">Humidité</p>
-                    <p className="text-2xl font-bold text-white">{data.humidity}%</p>
+                    <p className="text-2xl font-bold text-white">{weather.humidity}%</p>
                 </div>
 
                 {/* Vent */}
@@ -110,7 +73,16 @@ const WeatherDisplay = ({ city, unit }) => {
                         <FaWind className="text-2xl text-gray-300" />
                     </div>
                     <p className="text-sm text-white/70">Vent</p>
-                    <p className="text-2xl font-bold text-white">{data.wind} km/h</p>
+                    <p className="text-2xl font-bold text-white">{weather.wind} km/h</p>
+                </div>
+
+                {/* Pression */}
+                <div className="bg-white/10 rounded-2xl p-4 text-center">
+                    <div className="flex justify-center mb-2">
+                        <FaCloud className="text-2xl text-white/70" />
+                    </div>
+                    <p className="text-sm text-white/70">Pression</p>
+                    <p className="text-2xl font-bold text-white">{weather.pressure} hPa</p>
                 </div>
 
                 {/* Min/Max */}
@@ -121,7 +93,7 @@ const WeatherDisplay = ({ city, unit }) => {
                     </div>
                     <p className="text-sm text-white/70">Min/Max</p>
                     <p className="text-2xl font-bold text-white">
-                        {convertTemp(data.low)}°/{convertTemp(data.high)}°
+                        {convertTemp(weather.low)}°/{convertTemp(weather.high)}°
                     </p>
                 </div>
 
@@ -131,18 +103,18 @@ const WeatherDisplay = ({ city, unit }) => {
             <div className="grid grid-cols-2 gap-4 mt-6">
                 <div className="flex items-center justify-between text-white bg-white/5 rounded-xl p-3">
                     <div className="flex items-center gap-2">
-                        <FaCloud className="text-white/70" />
-                        <span className="text-sm">Pression</span>
+                        <FaThermometerHalf className="text-white/70" />
+                        <span className="text-sm">Code météo</span>
                     </div>
-                    <span className="font-bold">{data.pressure} hPa</span>
+                    <span className="font-bold">{weather.weatherCode}</span>
                 </div>
 
                 <div className="flex items-center justify-between text-white bg-white/5 rounded-xl p-3">
                     <div className="flex items-center gap-2">
                         <FaEye className="text-white/70" />
-                        <span className="text-sm">Visibilité</span>
+                        <span className="text-sm">Direction vent</span>
                     </div>
-                    <span className="font-bold">{data.visibility} km</span>
+                    <span className="font-bold">{weather.windDirection}°</span>
                 </div>
             </div>
 

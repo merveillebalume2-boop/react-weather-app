@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaSun, FaCloud, FaCloudRain, FaSnowflake } from 'react-icons/fa';
 
-const Forecast = ({ unit }) => {
+const Forecast = ({ Forecast, unit , loading }) => {
     // Données de prévisions
     const forecastData = [
         {
