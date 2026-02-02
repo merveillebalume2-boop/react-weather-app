@@ -284,7 +284,7 @@ function App() {
 
         {/* Footer */}
         <footer className="text-center text-white/60 mt-10 pb-4">
-          <p className="text-sm">© 2024 Météo App • Données fournies par Open-Meteo</p>
+          <p className="text-sm">© 2026 Météo App • Données fournies par Open-Meteo</p>
           <p className="text-xs mt-1">API 100% gratuite et sans clé nécessaire</p>
         </footer>
 
