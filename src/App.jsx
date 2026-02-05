@@ -1,3 +1,14 @@
+
+// En haut de ton App.jsx, ajoute :
+console.log('🌤️ Weather App v2.0 - International API');
+console.log('Deploy date:', new Date().toISOString());
+
+// Et dans le render, ajoute un badge
+<div className="fixed top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-xs">
+  v2.0 • {(new Date()).toLocaleDateString('fr-FR')}
+</div>
+
+
 import React, { useState, useEffect } from 'react';
 import WeatherDisplay from './components/WeatherDisplay';
 import Forecast from './components/Forecast';
@@ -416,4 +427,5 @@ function App() {
   );
 }
 
-export default App;
+export default App;   
+ 
