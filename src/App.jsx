@@ -409,7 +409,7 @@ function App() {
             Données météo en temps réel fournies par <strong>Open-Meteo API</strong>
           </p>
           <p className="text-white/60 text-xs mt-2">
-            • Couverture mondiale • Mise à jour toutes les heures • Sans clé API nécessaire
+            • Couverture mondiale • Mise à jour toutes les heures 
           </p>
           <p className="text-white/40 text-xs mt-1">
             Géolocalisation: {navigator.geolocation ? 'Disponible' : 'Non disponible'}
@@ -418,7 +418,7 @@ function App() {
 
         {/* Footer */}
         <footer className="text-center text-white/60 mt-6 pb-4">
-          <p className="text-sm">© 2024 Météo App • Données fournies par Open-Meteo</p>
+          <p className="text-sm">© 2026 Météo App • Données fournies par Open-Meteo</p>
           <p className="text-xs mt-1">API 100% gratuite • Toutes les villes du monde</p>
         </footer>
 
@@ -427,5 +427,4 @@ function App() {
   );
 }
 
-export default App;   
- 
+export default App; 
